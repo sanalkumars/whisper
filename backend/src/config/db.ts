@@ -4,8 +4,11 @@ import mongoose from "mongoose";
 export const connectDB = async()=>{
 
     try {
-
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        const mongoURI = process.env.MONGODB_URI as string;
+        if (!mongoURI) {
+            throw new Error("MONGODB_URI is not defined in environment variables");
+        }
+        await mongoose.connect(mongoURI);
         console.log("Connected to MongoDB");
         
     } catch (error) {
