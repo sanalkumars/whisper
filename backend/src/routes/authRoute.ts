@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authCallBack, getMe } from "../controllers/userController";
+import { authCallBack, getMe } from "../controllers/authController";
 import { protectedRoute } from "../middleware/auth";
 
 
