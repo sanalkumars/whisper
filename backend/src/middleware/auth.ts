@@ -13,10 +13,11 @@ export const protectedRoute = [
         try {
 
             const { userId: clerkId } = getAuth(req);
+        // this wont be necessery since clerk already do the check so commented it out
 
-            if (!clerkId) {
-                return res.status(401).json({ message: 'Unauthorized' });
-            }
+            // if (!clerkId) {
+            //     return res.status(401).json({ message: 'Unauthorized' });
+            // }
 
             const user = await User.findOne({ clerkId });
 
@@ -29,7 +30,9 @@ export const protectedRoute = [
 
         } catch (error) {
             console.log("Error occured in the auth middleware ", error)
-            return res.status(500).json({ message: 'Internal Server Error' });
+            res.status(500)
+            next(error)
+
         }
     }
 ]

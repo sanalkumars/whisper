@@ -31,7 +31,6 @@ export async function getMe(req: AuthReq, res: Response , next :NextFunction) {
 export async function authCallBack(req: Request, res: Response , next :NextFunction) {
     try {
         const { userId: clerkId } = getAuth(req);
-
         if (!clerkId) {
             return res.status(401).json({ message: "Unautherized" })
         }
@@ -45,7 +44,7 @@ export async function authCallBack(req: Request, res: Response , next :NextFunct
             user = await User.create({
                 clerkId,
                 name: clerkUser.firstName ? `${clerkUser.firstName}${clerkUser.lastName || ""}`.trim()
-                    : clerkUser.emailAddresses[0]?.emailAddress.split("@")[0],
+                    : clerkUser.emailAddresses[0]?.emailAddress?.split("@")[0],
                 email: clerkUser.emailAddresses[0]?.emailAddress,
                 avatar : clerkUser.imageUrl
 
