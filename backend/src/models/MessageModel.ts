@@ -32,4 +32,4 @@ const MessageSchema = new Schema<IMessage>({
 // index for faster retrieval of messages by chat , 1 from oldest to newest , -1 for newest to oldest
 MessageSchema.index({ chat: 1, createdAt: 1 });
 
-export const MessageModel = mongoose.model<IMessage>("Message",MessageSchema)
+export const Message = mongoose.model<IMessage>("Message",MessageSchema)
