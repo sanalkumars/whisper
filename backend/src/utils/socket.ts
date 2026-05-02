@@ -6,9 +6,7 @@ import { Message } from "../models/MessageModel";
 import { Chat } from "../models/ChatModel";
 import { User } from "../models/UserModel";
 
-interface SocketWithUserID extends Socket {
-    userId : string ;
-}
+
 
 // online users will be stored as a map key is userId & value is socketid
 
@@ -38,7 +36,7 @@ export const initializeSocket = ( httpServer : HttpServer)=>{
             const user = await User.findOne({ clerkId});
             if( !user ) return next( new Error("User Not Found"));
 
-            ( socket as SocketWithUserID ).userId = user._id.toString();
+             socket.data.userId = user._id.toString();
             next();
 
         } catch (error:any) {
@@ -49,7 +47,7 @@ export const initializeSocket = ( httpServer : HttpServer)=>{
 // this event name is strict and used when a new user connect to the server
     io.on("connection" , ( socket) =>{
 
-        const userId = (socket as SocketWithUserID).userId;
+        const userId = socket.data.userId;
 
         // sending list of online users after connection
         socket.emit("online-users" , { userIds : Array.from(onlineUsers.keys())});
@@ -98,7 +96,7 @@ export const initializeSocket = ( httpServer : HttpServer)=>{
                 chat.lastMessageAt = new Date();
                 await chat.save()
 
-                await message.populate( "sender" , "name email avatar");
+                await message.populate( "sender" , "name  avatar");
 
                 // sending the meesage to the user in real time 
 
